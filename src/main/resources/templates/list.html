@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Danh sach HV</h1>
+<table border="1px">
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+    </tr>
+    <th:block th:each="c:${students}">
+        <tr>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.address}"></td>
+            <td><a th:attr="idStudent=${c.getId()}" onclick="edit(this)">Edit</a></td>
+        </tr>
+    </th:block>
+</table>
+<script>
+    function edit(a) {
+        let name = prompt("Moi ban nhap ten");
+        let address = prompt("Dia chi");
+        let student = {
+            name: name,
+            address: address
+        }
+        let idStudent = a.getAttribute("idStudent");
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "PUT",
+            data: JSON.stringify(student),
+            url: "/students/edit/"+ idStudent,
+            success: alert("sửa thành công")
+        })
+        event.preventDefault();
+    }
+</script>
+</body>
+</html>
